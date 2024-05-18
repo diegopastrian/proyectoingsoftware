@@ -1,12 +1,13 @@
 
 import { Link } from 'react-router-dom'
 import React, { useContext, useEffect } from 'react'
-import { UnloggedNav } from './'
+import { LoggedNav, UnloggedNav } from './'
 import { UserContext } from '../../context/userContext'
 
 export const Navbar = () => {
-
+  
   const {user} = useContext(UserContext);
+  console.log(user)
   
   return (
     <>
@@ -24,6 +25,7 @@ export const Navbar = () => {
                 <a href="/" className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500" aria-current="page">Inicio</a>
               </li>
               {!user && <UnloggedNav/>}
+              {user && <LoggedNav/>}
               
             </ul>
           </div>

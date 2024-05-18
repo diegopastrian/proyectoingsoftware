@@ -8,13 +8,14 @@ import { UserContext } from '../../context/userContext';
 export const Login = () => {
   
   const navigate = useNavigate();
+  
   const [data, setData] = useState({  
     name: '',
     email: '',
     password: '',
   })
-
-
+  const { user, setuser } = useContext(UserContext);
+  console.log(user);
   const loginUser = async(e) => {
     e.preventDefault()
     const {email, password} = data;
@@ -27,8 +28,9 @@ export const Login = () => {
         toast.error(data.error)
       } else {
         setData({});
+        setuser(data);
         toast.success('Ingreso exitoso.');
-        navigate('/dashboard');
+        navigate('/Dashboard');
       }
 
     } catch (error) {
