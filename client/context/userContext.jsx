@@ -27,14 +27,19 @@ export function UserContextProvider({children}){
           localStorage.removeItem('user');
         }
       }, [user]);
-    
-    const LogoutUser = () => {
-        setuser(null);
-        localStorage.removeItem(user);
-    }
 
+    const logoutUser = async () => {
+        try {
+            await axios.post('/logout');
+            setuser(null);
+            localStorage.removeItem('user');
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
+    };
+    
     return(
-        <UserContext.Provider value={{user,setuser,LogoutUser}}>
+        <UserContext.Provider value={{user,setuser,logoutUser}}>
             {children}
         </UserContext.Provider>
     )

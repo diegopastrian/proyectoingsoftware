@@ -1,9 +1,9 @@
-const User = require('../models/user')
-const {hashPassword, comparePassword } = require('../helpers/auth') 
-const jwt = require('jsonwebtoken')
+const User = require('../models/user');
+const {hashPassword, comparePassword } = require('../helpers/auth');
+const jwt = require('jsonwebtoken');
 
 const test = (req,res) => {
-    res.json('test is working')
+    res.json('test is working');
 }
 //endpoint del registro
 const registerUser = async(req,res) => {
@@ -93,9 +93,14 @@ const getProfile = (req,res) =>{
     }
 }
 
+const logoutUser = (req,res) => {
+    res.cookie('token', '', { expires: new Date(0) }).json({ message: 'Sesión cerrada.' });
+}
+
 module.exports = {
     test,
     registerUser,
     loginUser,
-    getProfile
+    getProfile,
+    logoutUser
 }

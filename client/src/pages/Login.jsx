@@ -15,7 +15,6 @@ export const Login = () => {
     password: '',
   })
   const { user, setuser } = useContext(UserContext);
-  console.log(user);
   const loginUser = async(e) => {
     e.preventDefault()
     const {email, password} = data;
