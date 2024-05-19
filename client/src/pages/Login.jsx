@@ -2,7 +2,7 @@
 import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import {toast} from 'react-hot-toast'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, Link} from 'react-router-dom'
 import { UserContext } from '../../context/userContext';
 
 export const Login = () => {
@@ -40,7 +40,7 @@ export const Login = () => {
   return (
     <form className="max-w-sm mx-auto mt-12 flex flex-col w-96 p-6 shadow-lg bgwhite dark:bg-slate-900 rounded-md" onSubmit={loginUser} >
       <div className="mb-5">
-        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Correo</label>
         <input 
           type='text' 
           placeholder='Correo...' 
@@ -50,7 +50,7 @@ export const Login = () => {
         />
       </div>
       <div className="mb-5">
-        <label label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+        <label label className=" block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contraseña</label>
 
         <input 
           type='password' 
@@ -62,6 +62,12 @@ export const Login = () => {
 
       </div>
       <button type='submit' className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Ingresar</button>
+      <p className="mt-4 text-sm text-center text-gray-600 dark:text-gray-400">
+        No tiene una cuenta? 
+        <Link to="/register" className="text-blue-600 dark:text-blue-500 hover:underline ml-1">
+          Registrarse aquí
+        </Link>
+      </p>
     </form>
 
   )
