@@ -8,7 +8,7 @@ const test = (req,res) => {
 //endpoint del registro
 const registerUser = async(req,res) => {
     try{
-        const {name,email,password} = req.body;
+        const {name,username,password, accType} = req.body;
         // Revisar nombre
         if(!name){
             return res.json({
@@ -22,23 +22,24 @@ const registerUser = async(req,res) => {
             })
         };
         // Revisar correo
-        const exist = await User.findOne({email}); //busca si el correo está en la BDD
+        const exist = await User.findOne({username}); //busca si el nombre de usuario está en la BDD
 
-        if(!email){
+        if(!username){
             return res.json({
-                error: 'Se requiere un correo para el registro.'
+                error: 'Se requiere un nombre de usuario para el registro.'
             })
         }
         else if(exist){
             return res.json({
-                error: 'Ya existe una cuenta ingresada con este correo.'
+                error: 'Ya existe una cuenta ingresada con este nombre de usuario.'
             })
         }
         const hashedPassword = await hashPassword(password); 
         const user = await User.create({
             name, 
-            email, 
+            username, 
             password: hashedPassword,
+            accType
         });
 
         return res.json(user);
@@ -48,37 +49,25 @@ const registerUser = async(req,res) => {
     }
 }
 //endpoint del login
-const loginUser = async(req,res) => {
-    try {
-        const {email, password} = req.body;
+const loginUser = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
+    if (!user) return res.json({ error: 'No se encuentra el usuario.' });
 
-        const user = await User.findOne({email});
-
-        if( !user ) {
-            return res.json({
-                error: 'No se encuentra el usuario.'
-            })
-        }
-
-        const match = await comparePassword(password, user.password);
-
-        if(match) {
-            jwt.sign({email: user.email, id: user._id, name: user.name}, process.env.JWT_SECRET, {} , (error,token) =>{
-                if(error) throw error;
-                res.cookie('token',token).json(user);
-            } ) //palabra secreta
-        }
-        else{
-            res.json({
-                error: "Contraseña incorrecta."
-            })
-        }
-        
-
-    } catch (error) {
-        console.log(error);        
+    const match = await comparePassword(password, user.password);
+    if (match) {
+      jwt.sign({ username: user.username, id: user._id, name: user.name, accType: user.accType }, process.env.JWT_SECRET, {}, (error, token) => {
+        if (error) throw error;
+        res.cookie('token', token).json(user);
+      });
+    } else {
+      res.json({ error: 'Contraseña incorrecta.' });
     }
-}
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const getProfile = (req,res) =>{
     const {token} = req.cookies;

@@ -11,8 +11,13 @@ export const Router = () => {
   return (
     <Routes>
         <Route path='/' element={<Inicio/>}/>
-        <Route path='/register' element={<Register/>}/>
-        <Route path='/login' element={<Login/>}/>
+        <Route path='/register' element={ user ? (
+            user.accType === 'admin' ? ( <Register />) : (<Inicio />)
+          ) : (<Login />)
+        }/>
+        {!user ? (<Route path='/login' element={<Login/>}/>) : (
+          <Route path= '/login' element ={<Dashboard/>}/>
+        )}
         <Route path = '/logout' element = { <Logout/>}/>
         {user ? (<Route path='/dashboard' element={<Dashboard />} />) : (
         <Route path='/dashboard' element={<Navigate to='/login' replace />}/>
